@@ -8,6 +8,16 @@ app.get("/", (req, res) => {
   res.send("Hello from Node Server");
 });
 
+// const connectDB = async () => {
+//   try {
+//     await mongoose.connect("your_connection_string_here");
+//     console.log("MongoDB Connected");
+//   } catch (error) {
+//     console.error("Connection Failed:", error.message);
+//     process.exit(1);
+//   }
+// };
+
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
