@@ -57,6 +57,22 @@ app.put("/api/product/:id", async (req, res) => {
   }
 });
 
+app.delete("/api/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+
+    const deletedProduct = {};
+    if (product) {
+      product === deletedProduct;
+    } else {
+      res.status(404).json({ message: "Product is not deleted" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // const connectDB = async () => {
 //   try {
 //     await mongoose.connect("your_connection_string_here");
