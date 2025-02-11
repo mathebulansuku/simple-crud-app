@@ -1,30 +1,33 @@
 import express from "express";
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import { Product } from "./product.model.js";
 
 const app = express();
 const port = 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello from Node Server");
 });
 
-app.post("/api/products", (req, res) => {
-  console.log(req.body);
-  res.send(`Hello ${req.body.name}`); //{name: "Nsuku", surname: "Mathebula", email: "thebula@db.com"}
+app.get("/products/api", async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-app.delete("/products/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const searchIndex = products.findIndex((product) => product.id === id);
-
-  if (searchIndex > -1) {
-    const deletedProduct = products.splice(searchIndex, 1);
-    console.log(deletedProduct);
-    res.send(200).json("Product is deleted.");
-  } else {
-    res
-      .sendStatus(404)
-      .json({ error: `This product with ${id} does not exist.` });
+app.post("/api/products", async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    res.status(200).json({ message: "Product created", product });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
