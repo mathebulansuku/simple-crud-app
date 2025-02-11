@@ -1,11 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import { Product } from "./product.model.js";
+import { Product } from "./models/product.model.js";
 
 const app = express();
 const port = 3000;
 
+//middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -13,6 +14,7 @@ app.get("/", (req, res) => {
   res.send("Hello from Node Server");
 });
 
+//routes
 app.get("/api/products", async (req, res) => {
   //Allows you to get all products in mongoDB
   try {
@@ -23,7 +25,7 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-app.get("/api/product/:id", async (req, res) => {
+app.get("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findById(id);
@@ -41,7 +43,7 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
-app.put("/api/product/:id", async (req, res) => {
+app.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findByIdAndUpdate(id, req.body);
@@ -57,7 +59,7 @@ app.put("/api/product/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/product/:id", async (req, res) => {
+app.delete("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findByIdAndDelete(id);
