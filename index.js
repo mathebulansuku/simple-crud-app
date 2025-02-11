@@ -41,6 +41,22 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
+app.put("/api/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(id, req.body);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const updatedProduct = await Product.findById(id);
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // const connectDB = async () => {
 //   try {
 //     await mongoose.connect("your_connection_string_here");
