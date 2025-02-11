@@ -13,10 +13,20 @@ app.get("/", (req, res) => {
   res.send("Hello from Node Server");
 });
 
-app.get("/products/api", async (req, res) => {
+app.get("/api/products", async (req, res) => {
+  //Allows you to get all products in mongoDB
   try {
     const products = await Product.find({});
     res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
